@@ -1,6 +1,12 @@
 import streamlit as st
 import json
 
+st.set_page_config(
+    page_title="Confere Bolão",
+    page_icon="🎲",
+    layout="centered"
+)
+
 st.title("🎲 Conferidor de Bolões da Mega-Sena")
 
 # Entrada do resultado
