@@ -13,7 +13,7 @@ resultado = st.multiselect(
 if len(resultado) == 6:
     resultado = set(resultado)
 
-    with open("MEGASENA/JSON/boloes.json") as f:
+    with open("boloes.json") as f:
         boloes = json.load(f)
 
     for nome_bolao, jogos in boloes.items():
