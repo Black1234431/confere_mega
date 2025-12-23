@@ -13,8 +13,7 @@ resultado = st.multiselect(
 if len(resultado) == 6:
     resultado = set(resultado)
 
-    with open("boloes.json") as f:
-        boloes = json.load(f)
+    boloes = json.loads(st.secrets["boloes"]["dados"])
 
     for nome_bolao, jogos in boloes.items():
         st.subheader(nome_bolao)
