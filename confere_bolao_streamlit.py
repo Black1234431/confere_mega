@@ -7,6 +7,14 @@ st.set_page_config(
     layout="centered"
 )
 
+
+st.set_page_config(
+    page_title="Conferência de Bolões - Mega-Sena",
+    layout="centered"
+)
+
+st.title("🎰 Conferência de Bolões – Mega-Sena")
+
 st.markdown("""
 ### 📌 Como usar o conferidor
 
@@ -19,13 +27,6 @@ st.markdown("""
 
 💡 Você pode reutilizar o mesmo arquivo de bolões sempre que quiser.
 """)
-
-st.set_page_config(
-    page_title="Conferência de Bolões - Mega-Sena",
-    layout="centered"
-)
-
-st.title("🎰 Conferência de Bolões – Mega-Sena")
 
 # =================================
 # Inicializa estado
