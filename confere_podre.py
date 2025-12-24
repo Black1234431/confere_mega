@@ -175,7 +175,7 @@ if len(resultado) == 6:
     }
 
     for nome_bolao, jogos in boloes.items():
-        st.subheader(f"🧾 {nome_bolao}")
+        st.subheader(f"🤑 {nome_bolao}")
 
         premiadas = 0
 
