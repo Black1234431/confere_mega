@@ -154,7 +154,6 @@ if len(resultado) == 6:
             [21, 34, 41, 56, 57, 60],
             [6, 8, 30, 34, 35, 44]
         ]
-    ]
     }
 
         for nome_bolao, jogos in boloes.items():
