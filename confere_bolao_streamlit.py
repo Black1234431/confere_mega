@@ -26,6 +26,8 @@ st.markdown("""
 - Quais apostas foram **premiadas (4 ou mais acertos)**  
 
 💡 Você pode reutilizar o mesmo arquivo de bolões sempre que quiser.
+            
+Boa sorte! 🍀
 """)
 
 # =================================
