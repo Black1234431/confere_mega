@@ -1,12 +1,15 @@
 import streamlit as st
 import json
 
-# ==============================
-# Configuração da página
-# ==============================
 st.set_page_config(
     page_title="Confere Bolão",
     page_icon="🎲",
+    layout="centered"
+)
+
+
+st.set_page_config(
+    page_title="Conferência de Bolões - Mega-Sena",
     layout="centered"
 )
 
@@ -15,29 +18,27 @@ st.title("🎰 Conferência de Bolões – Mega-Sena")
 st.markdown("""
 ### 📌 Como usar o conferidor
 
-1️⃣ **Insira manualmente seus bolões** ou carregue um arquivo JSON já salvo  
-2️⃣ **Salve o arquivo** para conferir esses bolões novamente no futuro  
-3️⃣ Com os bolões carregados, **digite os 6 números do sorteio da Mega-Sena**  
+1️⃣ **Insira manualmente seus bolões**, criando um ou mais bolões com seus respectivos jogos.  
+2️⃣ **Salve o arquivo** para poder conferir esses bolões novamente no futuro.  
+3️⃣ Com os bolões carregados, **digite os 6 números do sorteio da Mega-Sena**.  
 4️⃣ O sistema irá conferir automaticamente todos os jogos e indicar:
 - Quantos acertos cada jogo teve  
 - Quais apostas foram **premiadas (4 ou mais acertos)**  
 
-💡 Você pode reutilizar o mesmo arquivo de bolões sempre que quiser.  
+💡 Você pode reutilizar o mesmo arquivo de bolões sempre que quiser.
+            
 Boa sorte! 🍀
 """)
 
-# ==============================
-# Estado da aplicação
-# ==============================
+# =================================
+# Inicializa estado
+# =================================
 if "boloes" not in st.session_state:
     st.session_state.boloes = {}
 
-if "modo_edicao" not in st.session_state:
-    st.session_state.modo_edicao = False
-
-# ==============================
+# =================================
 # Funções
-# ==============================
+# =================================
 
 
 def conferir_boloes(boloes, resultado):
@@ -62,9 +63,9 @@ def conferir_boloes(boloes, resultado):
         st.divider()
 
 
-# ==============================
-# Upload de arquivo JSON
-# ==============================
+# =================================
+# Upload de JSON
+# =================================
 st.subheader("📂 Carregar bolões de arquivo")
 
 arquivo = st.file_uploader("Envie um arquivo JSON", type="json")
@@ -74,61 +75,50 @@ if arquivo:
     st.session_state.boloes.update(dados)
     st.success("Bolões carregados com sucesso!")
 
-# ==============================
-# Botão de edição (toggle)
-# ==============================
-if st.button("✏️ Editar bolões"):
-    st.session_state.modo_edicao = not st.session_state.modo_edicao
+# =================================
+# Inserção manual (SEM sobrescrever)
+# =================================
+st.subheader("➕ Adicionar novo bolão manualmente")
 
-# ==============================
-# Área de edição (condicional)
-# ==============================
-if st.session_state.modo_edicao:
-    st.subheader("➕ Adicionar / Editar bolões")
+nome_bolao = st.text_input("Nome do bolão")
 
-    nome_bolao = st.text_input("Nome do bolão")
+jogos_texto = st.text_area(
+    "Jogos (um por linha, números separados por vírgula)",
+    placeholder="Ex:\n3,24,26,38,39,41\n4,6,11,19,20,31"
+)
 
-    jogos_texto = st.text_area(
-        "Jogos (um por linha, números separados por vírgula)",
-        placeholder="Ex:\n3,24,26,38,39,41\n4,6,11,19,20,31"
-    )
+if st.button("Adicionar bolão"):
+    if not nome_bolao.strip():
+        st.error("Informe o nome do bolão.")
+    elif not jogos_texto.strip():
+        st.error("Informe pelo menos um jogo.")
+    else:
+        jogos = []
+        for linha in jogos_texto.splitlines():
+            nums = [int(n.strip())
+                    for n in linha.split(",") if n.strip().isdigit()]
+            if nums:
+                jogos.append(nums)
 
-    if st.button("Adicionar / Atualizar bolão"):
-        if not nome_bolao.strip():
-            st.error("Informe o nome do bolão.")
-        elif not jogos_texto.strip():
-            st.error("Informe pelo menos um jogo.")
+        if jogos:
+            st.session_state.boloes[nome_bolao] = jogos
+            st.success(
+                f"Bolão '{nome_bolao}' adicionado com {len(jogos)} jogos!")
         else:
-            jogos = []
-            for linha in jogos_texto.splitlines():
-                nums = [
-                    int(n.strip())
-                    for n in linha.split(",")
-                    if n.strip().isdigit()
-                ]
-                if nums:
-                    jogos.append(nums)
+            st.error("Nenhum jogo válido encontrado.")
 
-            if jogos:
-                st.session_state.boloes[nome_bolao] = jogos
-                st.success(
-                    f"Bolão '{nome_bolao}' salvo com {len(jogos)} jogos!"
-                )
-            else:
-                st.error("Nenhum jogo válido encontrado.")
-
-# ==============================
+# =================================
 # Visualização dos bolões
-# ==============================
+# =================================
 if st.session_state.boloes:
     st.subheader("📋 Bolões carregados")
 
     for nome, jogos in st.session_state.boloes.items():
         st.write(f"• **{nome}** – {len(jogos)} jogos")
 
-# ==============================
-# Download do JSON
-# ==============================
+# =================================
+# Download do JSON unificado
+# =================================
 if st.session_state.boloes:
     json_str = json.dumps(
         st.session_state.boloes,
@@ -143,9 +133,10 @@ if st.session_state.boloes:
         mime="application/json"
     )
 
-# ==============================
-# Resultado do sorteio
-# ==============================
+
+# =================================
+# Resultado e conferência
+# =================================
 if st.session_state.boloes:
     st.subheader("🎯 Resultado do sorteio")
 
