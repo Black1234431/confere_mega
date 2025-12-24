@@ -2,6 +2,25 @@ import streamlit as st
 import json
 
 st.set_page_config(
+    page_title="Confere Bolão",
+    page_icon="🎲",
+    layout="centered"
+)
+
+st.markdown("""
+### 📌 Como usar o conferidor
+
+1️⃣ **Insira manualmente seus bolões**, criando um ou mais bolões com seus respectivos jogos.  
+2️⃣ **Salve o arquivo** para poder conferir esses bolões novamente no futuro.  
+3️⃣ Com os bolões carregados, **digite os 6 números do sorteio da Mega-Sena**.  
+4️⃣ O sistema irá conferir automaticamente todos os jogos e indicar:
+- Quantos acertos cada jogo teve  
+- Quais apostas foram **premiadas (4 ou mais acertos)**  
+
+💡 Você pode reutilizar o mesmo arquivo de bolões sempre que quiser.
+""")
+
+st.set_page_config(
     page_title="Conferência de Bolões - Mega-Sena",
     layout="centered"
 )
