@@ -162,16 +162,16 @@ if len(resultado) == 6:
         premiadas = 0
 
         for idx, jogo in enumerate(jogos, start=1):
-    acertos = len(resultado.intersection(jogo))
+            acertos = len(resultado.intersection(jogo))
             linha = f"Jogo {idx}: {jogo} → {acertos} acertos"
 
             if acertos >= 4:
-    st.success(linha + " 🎉")
+                st.success(linha + " 🎉")
                 premiadas += 1
             else:
-    st.write(linha)
+                st.write(linha)
 
         st.write(f"**Total de premiadas:** {premiadas}")
 
-    else:
+else:
     st.info("Selecione exatamente 6 números.")
