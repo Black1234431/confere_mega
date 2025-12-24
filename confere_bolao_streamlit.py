@@ -134,6 +134,55 @@ if st.session_state.boloes:
     )
 
 # =================================
+# Edição de bolões existentes
+# =================================
+if st.session_state.boloes:
+    st.subheader("✏️ Editar bolões existentes")
+
+    bolao_selecionado = st.selectbox(
+        "Selecione um bolão para editar",
+        options=list(st.session_state.boloes.keys())
+    )
+
+    jogos_atual = st.session_state.boloes[bolao_selecionado]
+
+    # Converte jogos para texto
+    jogos_texto_edit = "\n".join(
+        ", ".join(str(n) for n in jogo) for jogo in jogos_atual
+    )
+
+    novo_texto = st.text_area(
+        "Edite os jogos (um por linha, números separados por vírgula)",
+        value=jogos_texto_edit,
+        height=200
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("💾 Salvar alterações"):
+            novos_jogos = []
+            for linha in novo_texto.splitlines():
+                nums = [int(n.strip())
+                        for n in linha.split(",") if n.strip().isdigit()]
+                if nums:
+                    novos_jogos.append(nums)
+
+            if novos_jogos:
+                st.session_state.boloes[bolao_selecionado] = novos_jogos
+                st.success(
+                    f"Bolão '{bolao_selecionado}' atualizado com sucesso!")
+            else:
+                st.error("Nenhum jogo válido encontrado.")
+
+    with col2:
+        if st.button("🗑️ Excluir bolão"):
+            del st.session_state.boloes[bolao_selecionado]
+            st.warning(f"Bolão '{bolao_selecionado}' removido.")
+            st.experimental_rerun()
+
+
+# =================================
 # Resultado e conferência
 # =================================
 if st.session_state.boloes:
